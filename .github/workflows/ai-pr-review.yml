@@ -1,0 +1,28 @@
+name: AI pull request review
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, synchronize]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  review:
+    # Never expose the API key to code from an untrusted fork.
+    if: >-
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      GITHUB_TOKEN: ${{ github.token }}
+      OPENAI_MODEL: ${{ vars.OPENAI_PR_REVIEW_MODEL || 'gpt-5.6-terra' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Review pull request
+        run: python .github/scripts/review_pull_request.py

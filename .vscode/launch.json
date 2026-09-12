@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run user_table",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/python_process/user_table.py",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Run tests",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": ["tests"],
+      "console": "integratedTerminal"
+    }
+  ]
+}
